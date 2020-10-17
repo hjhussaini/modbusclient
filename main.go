@@ -7,14 +7,22 @@ import (
 	"os"
 	"os/signal"
 	"time"
+
+	"github.com/gorilla/mux"
+	"github.com/hjhussaini/plc/api"
 )
 
 func main() {
 	url := os.Getenv("URL")
 
+	router := mux.NewRouter()
+
+	plc := api.NewPLC()
+	plc.RegisterAPIs(router)
+
 	server := http.Server{
 		Addr:         url,
-		Handler:      nil,
+		Handler:      router,
 		IdleTimeout:  30 * time.Second,
 		ReadTimeout:  30 * time.Second,
 		WriteTimeout: 30 * time.Second,
