@@ -9,3 +9,8 @@ import (
 func ReadJSON(reader io.Reader, object interface{}) error {
 	return json.NewDecoder(reader).Decode(object)
 }
+
+// WriteJSON serilizes the given object into a string based JSON format
+func WriteJSON(object interface{}, writer io.WriteCloser) error {
+	return json.NewEncoder(writer).Encode(object)
+}
