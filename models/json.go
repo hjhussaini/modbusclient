@@ -11,6 +11,6 @@ func ReadJSON(reader io.Reader, object interface{}) error {
 }
 
 // WriteJSON serilizes the given object into a string based JSON format
-func WriteJSON(object interface{}, writer io.WriteCloser) error {
+func WriteJSON(object interface{}, writer io.Writer) error {
 	return json.NewEncoder(writer).Encode(object)
 }

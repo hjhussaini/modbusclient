@@ -3,10 +3,13 @@ package api
 import (
 	"net/http"
 
+	"github.com/goburrow/modbus"
 	"github.com/gorilla/mux"
 )
 
-type PLC struct{}
+type PLC struct {
+	client modbus.Client
+}
 
 func (plc *PLC) RegisterAPIs(router *mux.Router) {
 	postRouter := router.Methods(http.MethodPost).Subrouter()
