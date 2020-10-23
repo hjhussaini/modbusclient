@@ -14,8 +14,7 @@ func (plc *PLC) connect(
 	device := &models.Device{}
 	err := models.ReadJSON(request.Body, device)
 	if err != nil {
-		response.WriteHeader(http.StatusBadRequest)
-		models.WriteJSON(Result{Message: err.Error()}, response)
+		ResponseError(response, http.StatusBadRequest, err.Error())
 
 		return
 	}
@@ -26,11 +25,12 @@ func (plc *PLC) connect(
 	case "rtu":
 		plc.handler = modbus.NewRTUClientHandler(device.Address)
 	default:
+		ResponseError(response, http.StatusBadRequest, "Unknown protocol")
+
 		return
 	}
 	if err != nil {
-		response.WriteHeader(http.StatusInternalServerError)
-		models.WriteJSON(Result{Message: err.Error()}, response)
+		ResponseError(response, http.StatusInternalServerError, err.Error())
 
 		return
 	}
