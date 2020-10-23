@@ -11,24 +11,21 @@ func (plc *PLC) readDiscreteInputs(
 	request *http.Request,
 ) {
 	block := &models.Block{}
-	err := models.ReadJSON(request.Body, &block)
+	err := models.ReadJSON(request.Body, block)
 	if err != nil {
-		response.WriteHeader(http.StatusBadRequest)
-		models.WriteJSON(Result{Message: err.Error()}, response)
+		ResponseError(response, http.StatusBadRequest, err.Error())
 
 		return
 	}
 
 	data, err := plc.client.ReadDiscreteInputs(block.Address, block.Quantity)
 	if err != nil {
-		response.WriteHeader(http.StatusInternalServerError)
-		models.WriteJSON(Result{Message: err.Error()}, response)
+		ResponseError(response, http.StatusInternalServerError, err.Error())
 
 		return
 	}
 
-	results := make([]uint16, len(data))
-	models.WriteJSON(Result{Data: results}, response)
+	ResponseOK(response, data, false)
 }
 
 func (plc *PLC) readCoils(
