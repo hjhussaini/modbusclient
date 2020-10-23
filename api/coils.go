@@ -27,7 +27,8 @@ func (plc *PLC) readDiscreteInputs(
 		return
 	}
 
-	models.WriteJSON(Result{Data: data}, response)
+	results := make([]uint16, len(data))
+	models.WriteJSON(Result{Data: results}, response)
 }
 
 func (plc *PLC) readCoils(
@@ -51,7 +52,8 @@ func (plc *PLC) readCoils(
 		return
 	}
 
-	models.WriteJSON(Result{Data: data}, response)
+	results := make([]uint16, len(data))
+	models.WriteJSON(Result{Data: results}, response)
 
 }
 
