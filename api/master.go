@@ -22,10 +22,20 @@ func (plc *PLC) connect(
 
 	switch device.Protocol {
 	case "tcp":
-		plc.client = modbus.TCPClient(device.Address)
+		plc.handler = modbus.NewTCPClientHandler(device.Address)
 	case "rtu":
-		plc.client = modbus.RTUClient(device.Address)
+		plc.handler = modbus.NewRTUClientHandler(device.Address)
+	default:
+		return
 	}
+	if err != nil {
+		response.WriteHeader(http.StatusInternalServerError)
+		models.WriteJSON(Result{Message: err.Error()}, response)
+
+		return
+	}
+
+	plc.client = modbus.NewClient(plc.handler)
 
 }
 
@@ -33,5 +43,4 @@ func (plc *PLC) disconnect(
 	response http.ResponseWriter,
 	request *http.Request,
 ) {
-
 }

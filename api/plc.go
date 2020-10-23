@@ -8,7 +8,8 @@ import (
 )
 
 type PLC struct {
-	client modbus.Client
+	handler modbus.ClientHandler
+	client  modbus.Client
 }
 
 func (plc *PLC) RegisterAPIs(router *mux.Router) {
