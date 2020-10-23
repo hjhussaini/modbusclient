@@ -55,5 +55,26 @@ func (plc *PLC) writeCoils(
 	response http.ResponseWriter,
 	request *http.Request,
 ) {
+	block := &models.Block{}
+	err := models.ReadJSON(request.Body, block)
+	if err != nil {
+		ResponseError(response, http.StatusBadRequest, err.Error())
 
+		return
+	}
+
+	value := make([]byte, len(block.Value))
+	for index, _ := range block.Value {
+		value[index] = byte(block.Value[index])
+	}
+	_, err = plc.client.WriteMultipleCoils(
+		block.Address,
+		block.Quantity,
+		value,
+	)
+	if err != nil {
+		ResponseError(response, http.StatusInternalServerError, err.Error())
+
+		return
+	}
 }
