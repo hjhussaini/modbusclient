@@ -18,7 +18,7 @@ func (plc *PLC) readDiscreteInputs(
 		return
 	}
 
-	data, err := plc.client.ReadDiscreteInputs(block.Address, block.Quantity)
+	data, err := plc.client.ReadDiscreteInputs(block.Address, block.Quantity*8)
 	if err != nil {
 		ResponseError(response, http.StatusInternalServerError, err.Error())
 
@@ -40,7 +40,7 @@ func (plc *PLC) readCoils(
 		return
 	}
 
-	data, err := plc.client.ReadCoils(block.Address, block.Quantity)
+	data, err := plc.client.ReadCoils(block.Address, block.Quantity*8)
 	if err != nil {
 		ResponseError(response, http.StatusInternalServerError, err.Error())
 
@@ -69,7 +69,7 @@ func (plc *PLC) writeCoils(
 	}
 	_, err = plc.client.WriteMultipleCoils(
 		block.Address,
-		block.Quantity,
+		block.Quantity*8,
 		value,
 	)
 	if err != nil {

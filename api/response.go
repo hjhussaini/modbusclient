@@ -20,7 +20,7 @@ func ResponseOK(
 	for index, _ := range results {
 		if is16Bits {
 		} else {
-			data = append(data, uint16(results[index]))
+			data[index] = uint16(results[index])
 		}
 	}
 	models.WriteJSON(Result{Message: "OK", Data: data}, response)
