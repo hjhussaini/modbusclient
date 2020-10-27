@@ -36,3 +36,11 @@ func (plc *PLC) readFIFOQueue(
 ) {
 
 }
+
+func bytesToUint16(array []byte) (results []uint16) {
+	for index := 1; index < len(array); index += 2 {
+		results = append(results, uint16(array[index])*256+uint16(array[index+1]))
+	}
+
+	return results
+}
